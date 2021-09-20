@@ -7,6 +7,14 @@ import java.util.Locale;
 public class SpeakerTestDataFactory {
     private static final Faker faker = new Faker();
 
+    public static Speaker.Id aSpeakerId() {
+        return new Speaker.Id(aSpeakerEmail());
+    }
+
+    public static Speaker.Id aSpeakerId(String fullName) {
+        return new Speaker.Id(aSpeakerEmail(fullName));
+    }
+
     public static String aSpeakerEmail() {
         return aSpeakerEmail(aSpeakerName());
     }

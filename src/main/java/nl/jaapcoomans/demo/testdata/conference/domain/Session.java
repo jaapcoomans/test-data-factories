@@ -4,26 +4,26 @@ import java.text.MessageFormat;
 import java.util.UUID;
 
 public class Session {
-    private final UUID id;
-    private String title;
-    private String sessionAbstract;
-    private SessionType sessionType;
-    private String speakerEmail;
+    private final Session.Id id;
+    private final Conference.Id conferenceId;
+    private final Speaker.Id speakerId;
+    private final String title;
+    private final String sessionAbstract;
+    private final SessionType sessionType;
     private Status status;
-    private String roomName;
-    private TimeSlot timeSlot;
 
-    private Session(UUID id, String title, String sessionAbstract, SessionType sessionType, String speakerEmail, Status status) {
+    private Session(Id id, Conference.Id conferenceId, Speaker.Id speakerId, String title, String sessionAbstract, SessionType sessionType, Status status) {
         this.id = id;
+        this.conferenceId = conferenceId;
+        this.speakerId = speakerId;
         this.title = title;
         this.sessionAbstract = sessionAbstract;
         this.sessionType = sessionType;
-        this.speakerEmail = speakerEmail;
         this.status = status;
     }
 
-    public static Session create(String title, String sessionAbstract, SessionType sessionType, String speakerEmail) {
-        return new Session(UUID.randomUUID(), title, sessionAbstract, sessionType, speakerEmail, Status.SELECTED);
+    public static Session create(Conference.Id conferenceId, Speaker.Id speakerId, String title, String sessionAbstract, SessionType sessionType) {
+        return new Session(Id.create(), conferenceId, speakerId, title, sessionAbstract, sessionType, Status.SELECTED);
     }
 
     public void schedule(String roomName, TimeSlot timeSlot) {
@@ -37,7 +37,7 @@ public class Session {
         this.status = Status.SCHEDULED;
     }
 
-    public UUID getId() {
+    public Id getId() {
         return id;
     }
 
@@ -53,12 +53,14 @@ public class Session {
         return sessionType;
     }
 
-    public String getSpeakerEmail() {
-        return speakerEmail;
-    }
-
     public Status getStatus() {
         return status;
+    }
+
+    public static final record Id(UUID id) {
+        public static Id create() {
+            return new Id(UUID.randomUUID());
+        }
     }
 
     public enum Status {

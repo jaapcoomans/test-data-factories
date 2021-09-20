@@ -6,7 +6,7 @@ public enum SessionType {
     QUICKIE(15),
     IGNITE(5);
 
-    private int lengthInMinutes;
+    private final int lengthInMinutes;
 
     SessionType(int lengthInMinutes) {
         this.lengthInMinutes = lengthInMinutes;

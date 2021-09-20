@@ -3,11 +3,26 @@ package nl.jaapcoomans.demo.testdata.conference.domain;
 import com.github.javafaker.Faker;
 
 import java.text.MessageFormat;
+import java.time.Year;
+import java.time.format.DateTimeFormatter;
 
-import static nl.jaapcoomans.demo.testdata.conference.domain.SpeakerTestDataFactory.aSpeakerEmail;
+import static nl.jaapcoomans.demo.testdata.conference.domain.SpeakerTestDataFactory.aSpeakerId;
 
 public class PaperTestDataFactory {
     private static final Faker faker = new Faker();
+
+    public static Paper.Id aPaperId() {
+        return aPaperId(aConferenceId());
+    }
+
+    public static Paper.Id aPaperId(Conference.Id conferenceId) {
+        return Paper.Id.create(conferenceId);
+    }
+
+    public static Conference.Id aConferenceId() {
+        var conferenceName = faker.programmingLanguage().name().replaceAll(" ", "") + "Conf" + Year.now().plusYears(1).format(DateTimeFormatter.ofPattern("yyyy"));
+        return new Conference.Id(conferenceName);
+    }
 
     public static String aTitle() {
         var tech  = faker.options().option("Java 42", "AWS InfiniDash", "Random number generators", "", "");
@@ -51,15 +66,18 @@ public class PaperTestDataFactory {
         return faker.options().option(SessionType.class);
     }
 
-    public static Paper aPaper() {
+    public static Paper aValidPaper(Paper.Status status) {
+        var conferenceId = aConferenceId();
+
         return new Paper(
-                aSpeakerEmail(),
+                aPaperId(conferenceId),
+                aSpeakerId(),
                 aTitle(),
                 anAbstract(),
                 anOutline(),
                 aMessageToProgramCommittee(),
                 aSessionType(),
-                aStatus()
+                status
         );
     }
 }
