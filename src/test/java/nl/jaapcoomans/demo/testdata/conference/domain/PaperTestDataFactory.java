@@ -25,12 +25,12 @@ public class PaperTestDataFactory {
     }
 
     public static String aTitle() {
-        var tech  = faker.options().option("Java 42", "AWS InfiniDash", "Random number generators", "", "");
+        var tech = faker.options().option("Java 42", "AWS InfiniDash", "Random number generators");
         var titleTemplate = faker.options().option(
-                "{}, the good the bad and the ugly",
-                "7 reasons why {} is awesome",
-                "{} from the trenches",
-                "11 ways to improve your tests with {}"
+                "{0}, the good the bad and the ugly",
+                "7 reasons why {0} is awesome",
+                "{0} from the trenches",
+                "11 ways to improve your tests with {0}"
         );
         return MessageFormat.format(titleTemplate, tech);
     }
@@ -62,7 +62,7 @@ public class PaperTestDataFactory {
         return faker.options().option(Paper.Status.class);
     }
 
-    private static SessionType aSessionType() {
+    public static SessionType aSessionType() {
         return faker.options().option(SessionType.class);
     }
 
