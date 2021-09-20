@@ -116,16 +116,44 @@ public class Paper {
         return title;
     }
 
+    public void setTitle(String title) {
+        if (this.status != Status.DRAFT) {
+            throw new IllegalStateException("Title can only be changed when status is DRAFT.");
+        }
+        this.title = title;
+    }
+
     public String getSessionAbstract() {
         return sessionAbstract;
+    }
+
+    public void setSessionAbstract(String sessionAbstract) {
+        if (this.status != Status.DRAFT) {
+            throw new IllegalStateException("Abstract can only be changed when status is DRAFT.");
+        }
+        this.sessionAbstract = sessionAbstract;
     }
 
     public String getOutline() {
         return outline;
     }
 
+    public void setOutline(String outline) {
+        if (this.status != Status.DRAFT) {
+            throw new IllegalStateException("Outline can only be changed when status is DRAFT.");
+        }
+        this.outline = outline;
+    }
+
     public String getMessageToProgramCommittee() {
         return messageToProgramCommittee;
+    }
+
+    public void setMessageToProgramCommittee(String messageToProgramCommittee) {
+        if (this.status != Status.DRAFT) {
+            throw new IllegalStateException("Message to program committee can only be changed when status is DRAFT.");
+        }
+        this.messageToProgramCommittee = messageToProgramCommittee;
     }
 
     public SessionType getSessionType() {
