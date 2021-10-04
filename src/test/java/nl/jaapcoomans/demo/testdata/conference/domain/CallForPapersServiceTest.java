@@ -1,6 +1,7 @@
 package nl.jaapcoomans.demo.testdata.conference.domain;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
@@ -10,6 +11,8 @@ import static nl.jaapcoomans.demo.testdata.conference.domain.PaperTestDataFactor
 import static nl.jaapcoomans.demo.testdata.conference.domain.PaperTestDataFactory.aSessionType;
 import static nl.jaapcoomans.demo.testdata.conference.domain.PaperTestDataFactory.aValidPaper;
 import static nl.jaapcoomans.demo.testdata.conference.domain.SpeakerTestDataFactory.aSpeakerId;
+import static nl.jaapcoomans.demo.testdata.conference.domain.SpeakerTestDataFactory.aValidSpeaker;
+import static nl.jaapcoomans.demo.testdata.conference.domain.SpeakerTestDataFactory.anEmptySpeaker;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
@@ -19,8 +22,9 @@ import static org.mockito.Mockito.when;
 
 public class CallForPapersServiceTest {
     private final PaperRepository paperRepository = mock(PaperRepository.class);
+    private final SpeakerRepository speakerRepository = mock(SpeakerRepository.class);
 
-    private final CallForPapersService callForPapersService = new CallForPapersService(paperRepository);
+    private final CallForPapersService callForPapersService = new CallForPapersService(paperRepository, speakerRepository);
 
     @BeforeEach
     public void resetMocks() {
@@ -44,30 +48,48 @@ public class CallForPapersServiceTest {
         verify(paperRepository).save(paper);
     }
 
-    @Test
-    public void testSubmitPaper() {
-        // Given
-        var paper = aValidPaper(Paper.Status.DRAFT);
-        when(paperRepository.findById(paper.getId())).thenReturn(Optional.of(paper));
+    @Nested
+    public class SubmitPaper {
+        private final Speaker speaker = aValidSpeaker();
+        private final Paper paper = aValidPaper(Paper.Status.DRAFT, speaker.getSpeakerId());
 
-        // When
-        callForPapersService.submitPaper(paper.getId());
+        @Test
+        public void testSubmitPaper() {
+            // Given
+            when(paperRepository.findById(paper.getId())).thenReturn(Optional.of(paper));
+            when(speakerRepository.findById(paper.getSpeakerId())).thenReturn(Optional.of(speaker));
 
-        // Then
-        assertThat(paper.getStatus()).isEqualTo(Paper.Status.SUBMITTED);
+            // When
+            callForPapersService.submitPaper(paper.getId());
 
-        verify(paperRepository).save(paper);
-    }
+            // Then
+            assertThat(paper.getStatus()).isEqualTo(Paper.Status.SUBMITTED);
 
-    @Test
-    public void testSubmitPaperDoesNotExist() {
-        // Given
-        var paperId = aPaperId();
-        when(paperRepository.findById(paperId)).thenReturn(Optional.empty());
+            verify(paperRepository).save(paper);
+        }
 
-        // When + then
-        assertThrows(CallForPapersService.PaperDoesNotExist.class, () ->
-                callForPapersService.submitPaper(paperId)
-        );
+        @Test
+        public void testSubmitPaperDoesNotExist() {
+            // Given
+            var paperId = aPaperId();
+            when(paperRepository.findById(paperId)).thenReturn(Optional.empty());
+
+            // When + then
+            assertThrows(CallForPapersService.PaperDoesNotExist.class, () ->
+                    callForPapersService.submitPaper(paperId)
+            );
+        }
+
+        @Test
+        public void submitPaperSpeakerProfileIncomplete() {
+            var incompleteSpeakerProfile = anEmptySpeaker(paper.getSpeakerId());
+
+            when(paperRepository.findById(paper.getId())).thenReturn(Optional.of(paper));
+            when(speakerRepository.findById(paper.getSpeakerId())).thenReturn(Optional.of(incompleteSpeakerProfile));
+
+            assertThrows(CallForPapersService.IncompleteSpeakerProfile.class, () ->
+                    callForPapersService.submitPaper(paper.getId())
+            );
+        }
     }
 }

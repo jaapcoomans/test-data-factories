@@ -67,11 +67,15 @@ public class PaperTestDataFactory {
     }
 
     public static Paper aValidPaper(Paper.Status status) {
+        return aValidPaper(status, aSpeakerId());
+    }
+
+    public static Paper aValidPaper(Paper.Status status, Speaker.Id speakerId) {
         var conferenceId = aConferenceId();
 
         return new Paper(
                 aPaperId(conferenceId),
-                aSpeakerId(),
+                speakerId,
                 aTitle(),
                 anAbstract(),
                 anOutline(),

@@ -19,6 +19,10 @@ public class SpeakerTestDataFactory {
         return aSpeakerEmail(aSpeakerName());
     }
 
+    public static String anInvalidSpeakerEmail() {
+        return "invalid";
+    }
+
     public static String aSpeakerName() {
         return faker.name().fullName();
     }
@@ -28,22 +32,44 @@ public class SpeakerTestDataFactory {
         return faker.internet().emailAddress(localPart);
     }
 
-    private static String aSpeakerBio() {
-        return faker.lorem().paragraph(10);
+    public static String aValidSpeakerBio() {
+        var speakerBio = faker.lorem().paragraph(10);
+        if (speakerBio.length() > Speaker.MAX_BIO_LENGTH) {
+            return speakerBio.substring(0, Speaker.MAX_BIO_LENGTH);
+        } else {
+            return speakerBio;
+        }
     }
 
-    private static String aSpeakerTwitterHandle(String fullName) {
-        return "@" + fullName.toLowerCase(Locale.ROOT).replaceAll(" ", "") + "tweets";
+    public static String anInvalidSpeakerBio() {
+        var speakerBio = new StringBuilder(faker.lorem().paragraph(10));
+        while (speakerBio.length() <= Speaker.MAX_BIO_LENGTH) {
+            speakerBio.append(faker.lorem().paragraph(10));
+        }
+        return speakerBio.toString();
     }
 
-    public static Speaker aSpeaker() {
+    public static String aSpeakerTwitterHandle(String fullName) {
+        var twitterHandle = "@" + fullName.toLowerCase(Locale.ROOT).replaceAll(" ", "") + "tweets";
+        if (twitterHandle.length() > 16) {
+            return twitterHandle.substring(0, 16);
+        } else {
+            return twitterHandle;
+        }
+    }
+
+    public static Speaker anEmptySpeaker(Speaker.Id speakerId) {
+        return Speaker.create(speakerId.emailAddress(), "", "", "");
+    }
+
+    public static Speaker aValidSpeaker() {
         var fullName = aSpeakerName();
 
         return Speaker.create(
                 aSpeakerEmail(fullName),
                 fullName,
                 aSpeakerTwitterHandle(fullName),
-                aSpeakerBio()
+                aValidSpeakerBio()
         );
     }
 }
