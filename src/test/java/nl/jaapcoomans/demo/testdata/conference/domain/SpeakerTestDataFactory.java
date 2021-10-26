@@ -50,7 +50,8 @@ public class SpeakerTestDataFactory {
     }
 
     public static String aSpeakerTwitterHandle(String fullName) {
-        var twitterHandle = "@" + fullName.toLowerCase(Locale.ROOT).replaceAll(" ", "") + "tweets";
+        var twitterHandle = "@" + fullName.toLowerCase(Locale.ROOT).replaceAll(" ", "")
+                .replaceAll("\\.", "_") + "tweets";
         if (twitterHandle.length() > 16) {
             return twitterHandle.substring(0, 16);
         } else {
