@@ -18,3 +18,4 @@ I presented the conference talk to which this project belongs at the following c
 |------------|------------|-------------------------|
 | Devoxx UK  | 02-11-2021 | https://www.devoxx.co.uk/talk/?id=12628
 | J-Fall     | 04-11-2021 | https://jfall.nl/timetable-2021/
+| JavaLand   | 16-03-2022 | https://en.shop.doag.org/javaland/2022/agenda/
