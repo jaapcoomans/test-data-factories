@@ -1,8 +1,13 @@
 package nl.jaapcoomans.demo.testdata.conference.domain;
 
 public class Room {
-    private String name;
-    private int capacity;
+    private final String name;
+    private final int capacity;
+
+    public Room(String name, int capacity) {
+        this.name = name;
+        this.capacity = capacity;
+    }
 
     public String getName() {
         return name;

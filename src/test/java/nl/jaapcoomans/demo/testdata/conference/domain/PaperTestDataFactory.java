@@ -50,7 +50,7 @@ public class PaperTestDataFactory {
                 );
     }
 
-    private static String anAbstract() {
+    public static String anAbstract() {
         return faker.lorem().paragraph(15);
     }
 
@@ -71,8 +71,10 @@ public class PaperTestDataFactory {
     }
 
     public static Paper aValidPaper(Paper.Status status, Speaker.Id speakerId) {
-        var conferenceId = aConferenceId();
+        return aValidPaper(status, speakerId, aConferenceId());
+    }
 
+    public static Paper aValidPaper(Paper.Status status, Speaker.Id speakerId, Conference.Id conferenceId) {
         return new Paper(
                 aPaperId(conferenceId),
                 speakerId,

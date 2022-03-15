@@ -6,9 +6,13 @@ The application is incomplete and limited to just a couple of domain classes for
 The main purpose is to demonstrate how Java-faker can be used to create Test Data Factories for unit tests.
 
 ## Test Data Factories
-The project currently contains 2 Test Data Factories:
+The project currently contains 4 Test Data Factories:
 * [PaperTestDataFactory](src/test/java/nl/jaapcoomans/demo/testdata/conference/domain/PaperTestDataFactory.java)
 * [SpeakerTestDataFactory](src/test/java/nl/jaapcoomans/demo/testdata/conference/domain/SpeakerTestDataFactory.java)
+* [RoomTestDataFactory](src/test/java/nl/jaapcoomans/demo/testdata/conference/domain/RoomTestDataFactory.java)
+* [ScheduleTestDataFactory](src/test/java/nl/jaapcoomans/demo/testdata/conference/domain/ScheduleTestDataFactory.java)
+
+The latter combines the Factory with a Builder to demonstrate complex objects.
 
 ## Conferences
 
