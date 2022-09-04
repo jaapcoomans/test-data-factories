@@ -32,8 +32,14 @@ public class Order {
         return new OrderBuilder();
     }
 
-    public static Order createOrder(Customer.Id customerId) {
+    public static Order create(Customer.Id customerId) {
         return new Order(customerId, Status.DRAFT);
+    }
+
+    public static Order create(Customer.Id customerId, Game game) {
+        var order = create(customerId);
+        order.addGame(game, 1);
+        return order;
     }
 
     public void addGame(Game game, int numberOfItems) {

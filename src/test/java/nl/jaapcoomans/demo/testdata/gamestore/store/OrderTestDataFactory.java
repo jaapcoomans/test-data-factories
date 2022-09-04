@@ -20,7 +20,7 @@ public class OrderTestDataFactory {
     }
 
     public static Order anEmptyDraftOrder() {
-        return Order.createOrder(aCustomerId());
+        return Order.create(aCustomerId());
     }
 
     public static Order aDraftOrder() {
