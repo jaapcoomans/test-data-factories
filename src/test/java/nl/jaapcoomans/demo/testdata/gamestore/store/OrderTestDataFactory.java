@@ -7,6 +7,7 @@ import java.util.stream.IntStream;
 import static nl.jaapcoomans.demo.testdata.gamestore.catalog.GameTestDataFactory.aGameId;
 import static nl.jaapcoomans.demo.testdata.gamestore.catalog.GameTestDataFactory.aPrice;
 import static nl.jaapcoomans.demo.testdata.gamestore.store.CustomerTestDataFactory.aCustomerId;
+import static nl.jaapcoomans.demo.testdata.gamestore.store.DeliveryMethodTestDataFactory.aDeliveryMethod;
 
 public class OrderTestDataFactory {
     private static final Faker faker = Faker.instance();
@@ -25,6 +26,17 @@ public class OrderTestDataFactory {
 
     public static Order aDraftOrder() {
         return anOrder(Order.Status.DRAFT);
+    }
+
+    public static Order aConfirmedOrder() {
+        var orderBuilder = Order.builder()
+                .customerId(aCustomerId())
+                .status(Order.Status.CONFIRMED)
+                .deliveryMethod(aDeliveryMethod());
+
+        addSomeOrderLines(orderBuilder);
+
+        return orderBuilder.build();
     }
 
     public static Order anOrder(Order.Status status) {

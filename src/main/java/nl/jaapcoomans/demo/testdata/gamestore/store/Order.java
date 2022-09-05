@@ -1,13 +1,14 @@
 package nl.jaapcoomans.demo.testdata.gamestore.store;
 
-import nl.jaapcoomans.demo.testdata.gamestore.catalog.Game;
-
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+
+import nl.jaapcoomans.demo.testdata.gamestore.catalog.Game;
 
 public class Order {
     private final Customer.Id customerId;
@@ -15,17 +16,24 @@ public class Order {
     private Status status;
     private final Set<Discount> discounts;
     private DeliveryMethod deliveryMethod;
+    private Payment.Id paymentId;
+    private Payment.Type paymentType;
+    private LocalDate paymentDate;
 
     private Order(Customer.Id customerId, Status status) {
-        this(customerId, new ArrayList<>(), status, new HashSet<>(), null);
+        this(customerId, new ArrayList<>(), status, new HashSet<>(), null, null, null, null);
     }
 
-    private Order(Customer.Id customerId, List<OrderLine> orderLines, Status status, Set<Discount> discounts, DeliveryMethod deliveryMethod) {
+    private Order(Customer.Id customerId, List<OrderLine> orderLines, Status status, Set<Discount> discounts, DeliveryMethod deliveryMethod, Payment.Id paymentId, Payment.Type paymentType,
+            LocalDate paymentDate) {
         this.customerId = customerId;
         this.orderLines = orderLines;
         this.status = status;
         this.discounts = discounts;
         this.deliveryMethod = deliveryMethod;
+        this.paymentId = paymentId;
+        this.paymentType = paymentType;
+        this.paymentDate = paymentDate;
     }
 
     public static OrderBuilder builder() {
@@ -69,6 +77,18 @@ public class Order {
         status = Status.CONFIRMED;
     }
 
+    public void processPayment(Payment payment) {
+        if (status != Status.CONFIRMED) {
+            throw new OrderNotConfirmed();
+        }
+        if (payment.amount().compareTo(this.calculateTotalAmount()) < 0) {
+            throw new PaymentInsufficient(payment.amount(), this.calculateTotalAmount());
+        }
+        this.paymentType = payment.type();
+        this.paymentDate = LocalDate.now();
+        status = Status.PAID;
+    }
+
     public void deliver() {
         if (status != Status.PAID) {
             throw new OrderNotPaid();
@@ -105,6 +125,18 @@ public class Order {
 
     public DeliveryMethod getDeliveryMethod() {
         return deliveryMethod;
+    }
+
+    public Payment.Id getPaymentId() {
+        return paymentId;
+    }
+
+    public Payment.Type getPaymentType() {
+        return paymentType;
+    }
+
+    public LocalDate getPaymentDate() {
+        return paymentDate;
     }
 
     public BigDecimal calculateTotalAmount() {
@@ -160,6 +192,9 @@ public class Order {
         private Status status;
         private final Set<Discount> discounts = new HashSet<>();
         private DeliveryMethod deliveryMethod;
+        private Payment.Id paymentId;
+        private Payment.Type paymentType;
+        private LocalDate paymentDate;
 
         private OrderBuilder() {
         }
@@ -189,6 +224,21 @@ public class Order {
             return this;
         }
 
+        public OrderBuilder paymentId(Payment.Id paymentId) {
+            this.paymentId = paymentId;
+            return this;
+        }
+
+        public OrderBuilder paymentType(Payment.Type paymentType) {
+            this.paymentType = paymentType;
+            return this;
+        }
+
+        public OrderBuilder paymentDate(LocalDate paymentDate) {
+            this.paymentDate = paymentDate;
+            return this;
+        }
+
         public Order build() {
             Objects.requireNonNull(customerId, "customerId must not be null");
             Objects.requireNonNull(status, "status must not be null");
@@ -198,7 +248,10 @@ public class Order {
                     new ArrayList<>(orderLines),
                     status,
                     new HashSet<>(discounts),
-                    deliveryMethod
+                    deliveryMethod,
+                    paymentId,
+                    paymentType,
+                    paymentDate
             );
         }
     }
@@ -206,15 +259,28 @@ public class Order {
     public static class OrderCannotBeModified extends RuntimeException {
     }
 
-    private static class OrderAlreadyConfirmed extends RuntimeException {
+    public static class OrderAlreadyConfirmed extends RuntimeException {
     }
 
     public static class OrderNotPaid extends RuntimeException {
     }
 
-    private static class OrderIsEmpty extends RuntimeException {
+    public static class OrderIsEmpty extends RuntimeException {
     }
 
-    private static class NoDeliveryMethodSelected extends RuntimeException {
+    public static class NoDeliveryMethodSelected extends RuntimeException {
+    }
+
+    public static class OrderNotConfirmed extends RuntimeException {
+    }
+
+    public static class PaymentInsufficient extends RuntimeException {
+        private PaymentInsufficient(BigDecimal paymentAmount, BigDecimal orderTotal) {
+            super(toMessage(paymentAmount, orderTotal));
+        }
+
+        private static String toMessage(BigDecimal paymentAmount, BigDecimal orderTotal) {
+            return String.format("Payment amount (%s) insufficient for order total of %s", paymentAmount, orderTotal);
+        }
     }
 }
