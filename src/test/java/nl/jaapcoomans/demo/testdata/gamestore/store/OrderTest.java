@@ -1,21 +1,25 @@
 package nl.jaapcoomans.demo.testdata.gamestore.store;
 
-import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.*;
 import org.junit.jupiter.params.provider.*;
 
-import nl.jaapcoomans.demo.testdata.gamestore.store.discount.CombinationDiscount;
-
 import static nl.jaapcoomans.demo.testdata.gamestore.catalog.GameTestDataFactory.aGame;
+import static nl.jaapcoomans.demo.testdata.gamestore.catalog.GameTestDataFactory.aGameId;
+import static nl.jaapcoomans.demo.testdata.gamestore.catalog.GameTestDataFactory.aPrice;
 import static nl.jaapcoomans.demo.testdata.gamestore.store.DeliveryMethodTestDataFactory.aDeliveryMethod;
-import static nl.jaapcoomans.demo.testdata.gamestore.store.OrderTestDataBuilder.givenADraftOrder;
+import static nl.jaapcoomans.demo.testdata.gamestore.store.OrderTestDataBuilder.givenAnOrder;
 import static nl.jaapcoomans.demo.testdata.gamestore.store.OrderTestDataFactory.aConfirmedOrder;
 import static nl.jaapcoomans.demo.testdata.gamestore.store.OrderTestDataFactory.aDraftOrder;
+import static nl.jaapcoomans.demo.testdata.gamestore.store.OrderTestDataFactory.aNumberOfItems;
 import static nl.jaapcoomans.demo.testdata.gamestore.store.OrderTestDataFactory.anEmptyDraftOrder;
 import static nl.jaapcoomans.demo.testdata.gamestore.store.OrderTestDataFactory.anOrder;
+import static nl.jaapcoomans.demo.testdata.gamestore.store.OrderTestDataFactory.anOrderBuilder;
 import static nl.jaapcoomans.demo.testdata.gamestore.store.PaymentTestDataFactory.aPaymentFor;
+import static nl.jaapcoomans.demo.testdata.gamestore.store.PaymentTestDataFactory.aPaymentId;
+import static nl.jaapcoomans.demo.testdata.gamestore.store.PaymentTestDataFactory.aPaymentType;
 import static nl.jaapcoomans.demo.testdata.gamestore.store.PaymentTestDataFactory.anInsufficientPaymentFor;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -97,5 +101,43 @@ public class OrderTest {
 
         // When + then
         assertThrows(Order.OrderNotPaid.class, order::deliver);
+    }
+
+    @Test
+    public void aComplexTestWithBuilder() {
+        // Given
+        var order = anOrderBuilder()
+                .orderLine(aGameId(), aNumberOfItems(), aPrice())
+                .orderLine(aGameId(), aNumberOfItems(), aPrice())
+                .status(Order.Status.PAID)
+                .paymentId(aPaymentId())
+                .paymentType(aPaymentType())
+                .paymentDate(LocalDate.now())
+                .build();
+        var itemToCancel = order.getOrderLines().get(0);
+
+        // When
+        var newOrder = order.cancelItem(itemToCancel.getGameId());
+
+        // Then
+        assertThat(newOrder.getOrderLines().size()).isEqualTo(order.getOrderLines().size() - 1);
+        assertThat(newOrder.calculateTotalAmount()).isEqualTo(order.calculateTotalAmount().subtract(itemToCancel.totalPrice()));
+    }
+
+    @Test
+    public void aComplexTestWithTestDataBuilder() {
+        // Given
+        var order = givenAnOrder()
+                .withMultipleOrderLines()
+                .thatHasBeenPaid()
+                .build();
+        var itemToCancel = order.getOrderLines().get(0);
+
+        // When
+        var newOrder = order.cancelItem(itemToCancel.getGameId());
+
+        // Then
+        assertThat(newOrder.getOrderLines().size()).isEqualTo(order.getOrderLines().size() - 1);
+        assertThat(newOrder.calculateTotalAmount()).isEqualTo(order.calculateTotalAmount().subtract(itemToCancel.totalPrice()));
     }
 }

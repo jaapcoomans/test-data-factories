@@ -89,6 +89,27 @@ public class Order {
         status = Status.PAID;
     }
 
+    public Order cancelItem(Game.Id gameId) {
+        if (status == Status.SHIPPED) {
+            throw new OrderAlreadyShipped();
+        } else if (status == Status.PAID && orderLines.size() <= 1) {
+            throw new CannotCancelLastItem();
+        }
+
+        return new Order(
+                customerId,
+                orderLines.stream()
+                        .filter(orderLine -> orderLine.gameId != gameId)
+                        .toList(),
+                status,
+                discounts,
+                deliveryMethod,
+                paymentId,
+                paymentType,
+                paymentDate
+        );
+    }
+
     public void deliver() {
         if (status != Status.PAID) {
             throw new OrderNotPaid();
@@ -272,6 +293,12 @@ public class Order {
     }
 
     public static class OrderNotConfirmed extends RuntimeException {
+    }
+
+    public static class OrderAlreadyShipped extends RuntimeException {
+    }
+
+    public static class CannotCancelLastItem extends RuntimeException {
     }
 
     public static class PaymentInsufficient extends RuntimeException {

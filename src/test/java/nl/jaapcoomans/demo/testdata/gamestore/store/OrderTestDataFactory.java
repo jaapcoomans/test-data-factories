@@ -1,8 +1,8 @@
 package nl.jaapcoomans.demo.testdata.gamestore.store;
 
-import com.github.javafaker.Faker;
-
 import java.util.stream.IntStream;
+
+import com.github.javafaker.Faker;
 
 import static nl.jaapcoomans.demo.testdata.gamestore.catalog.GameTestDataFactory.aGameId;
 import static nl.jaapcoomans.demo.testdata.gamestore.catalog.GameTestDataFactory.aPrice;
@@ -57,6 +57,13 @@ public class OrderTestDataFactory {
         var numberOfOrderLines = faker.number().numberBetween(1, 10);
         IntStream.range(0, numberOfOrderLines)
                 .forEach(i -> builder.orderLine(aGameId(), aNumberOfItems(), aPrice()));
+    }
 
+    public static Order.OrderBuilder anOrderBuilder() {
+        return Order.builder()
+                .status(Order.Status.DRAFT)
+                .orderLine(aGameId(), aNumberOfItems(), aPrice())
+                .deliveryMethod(aDeliveryMethod())
+                .customerId(aCustomerId());
     }
 }
