@@ -1,5 +1,7 @@
 package nl.jaapcoomans.demo.testdata.gamestore.store;
 
+import nl.jaapcoomans.demo.testdata.gamestore.catalog.Game;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -7,10 +9,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-
-import nl.jaapcoomans.demo.testdata.gamestore.catalog.Game;
+import java.util.UUID;
 
 public class Order {
+    private final Id id;
     private final Customer.Id customerId;
     private final List<OrderLine> orderLines;
     private Status status;
@@ -25,7 +27,8 @@ public class Order {
     }
 
     private Order(Customer.Id customerId, List<OrderLine> orderLines, Status status, Set<Discount> discounts, DeliveryMethod deliveryMethod, Payment.Id paymentId, Payment.Type paymentType,
-            LocalDate paymentDate) {
+                  LocalDate paymentDate) {
+        this.id = new Id(UUID.randomUUID());
         this.customerId = customerId;
         this.orderLines = orderLines;
         this.status = status;
@@ -54,7 +57,7 @@ public class Order {
         if (status != Status.DRAFT) {
             throw new OrderCannotBeModified();
         }
-        orderLines.add(new OrderLine(game.getId(), numberOfItems, game.getPrice()));
+        orderLines.add(new OrderLine(game, numberOfItems, game.getPrice()));
     }
 
     public void selectDeliveryMethod(DeliveryMethod deliveryMethod) {
@@ -84,6 +87,7 @@ public class Order {
         if (payment.amount().compareTo(this.calculateTotalAmount()) < 0) {
             throw new PaymentInsufficient(payment.amount(), this.calculateTotalAmount());
         }
+        this.paymentId = payment.id();
         this.paymentType = payment.type();
         this.paymentDate = LocalDate.now();
         status = Status.PAID;
@@ -95,6 +99,7 @@ public class Order {
         } else if (status == Status.PAID && orderLines.size() <= 1) {
             throw new CannotCancelLastItem();
         }
+        this.status = Status.CANCELLED;
 
         return new Order(
                 customerId,
@@ -126,6 +131,10 @@ public class Order {
     public boolean containsGame(Game.Id gameId) {
         return orderLines.stream()
                 .anyMatch(line -> line.gameId.equals(gameId));
+    }
+
+    public Id getId() {
+        return id;
     }
 
     public Customer.Id getCustomerId() {
@@ -175,19 +184,28 @@ public class Order {
                 .add(deliveryCost);
     }
 
+    public record Id(UUID value) {
+    }
+
     public static class OrderLine {
         private final Game.Id gameId;
+        private final String description;
         private final int numberOfItems;
         private final BigDecimal pricePerPiece;
 
-        private OrderLine(Game.Id gameId, int numberOfItems, BigDecimal pricePerPiece) {
-            this.gameId = gameId;
+        private OrderLine(Game game, int numberOfItems, BigDecimal pricePerPiece) {
+            this.gameId = game.getId();
+            this.description = game.getTitle();
             this.numberOfItems = numberOfItems;
             this.pricePerPiece = pricePerPiece;
         }
 
         public Game.Id getGameId() {
             return gameId;
+        }
+
+        public String getDescription() {
+            return description;
         }
 
         public int getNumberOfItems() {
@@ -204,7 +222,7 @@ public class Order {
     }
 
     public enum Status {
-        DRAFT, CONFIRMED, PAID, SHIPPED
+        DRAFT, CONFIRMED, PAID, SHIPPED, CANCELLED
     }
 
     public static class OrderBuilder {
@@ -225,8 +243,8 @@ public class Order {
             return this;
         }
 
-        public OrderBuilder orderLine(Game.Id gameId, int numberOfItems, BigDecimal pricePerPiece) {
-            this.orderLines.add(new OrderLine(gameId, numberOfItems, pricePerPiece));
+        public OrderBuilder orderLine(Game game, int numberOfItems, BigDecimal pricePerPiece) {
+            this.orderLines.add(new OrderLine(game, numberOfItems, pricePerPiece));
             return this;
         }
 

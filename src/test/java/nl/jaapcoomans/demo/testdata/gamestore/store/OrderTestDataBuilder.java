@@ -7,6 +7,7 @@ import com.github.javafaker.Faker;
 
 import static nl.jaapcoomans.demo.testdata.gamestore.catalog.GameTestDataFactory.aGame;
 import static nl.jaapcoomans.demo.testdata.gamestore.store.CustomerTestDataFactory.aCustomerId;
+import static nl.jaapcoomans.demo.testdata.gamestore.store.OrderDemoPrinter.printForDemo;
 import static nl.jaapcoomans.demo.testdata.gamestore.store.OrderTestDataFactory.aNumberOfItems;
 import static nl.jaapcoomans.demo.testdata.gamestore.store.PaymentTestDataFactory.aPaymentId;
 import static nl.jaapcoomans.demo.testdata.gamestore.store.PaymentTestDataFactory.aPaymentType;
@@ -30,7 +31,7 @@ class OrderTestDataBuilder {
     public OrderTestDataBuilder withMultipleOrderLines() {
         IntStream.range(0, faker.number().numberBetween(2, 6))
                 .mapToObj(i -> aGame())
-                .forEach(game -> orderBuilder.orderLine(game.getId(), aNumberOfItems(), game.getPrice()));
+                .forEach(game -> orderBuilder.orderLine(game, aNumberOfItems(), game.getPrice()));
         return this;
     }
 
@@ -43,6 +44,7 @@ class OrderTestDataBuilder {
     }
 
     public Order build() {
-        return orderBuilder.build();
+        var order = orderBuilder.build();
+        return printForDemo(order);
     }
 }

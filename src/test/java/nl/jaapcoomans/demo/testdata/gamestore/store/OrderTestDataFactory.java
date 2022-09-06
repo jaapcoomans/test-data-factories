@@ -1,13 +1,14 @@
 package nl.jaapcoomans.demo.testdata.gamestore.store;
 
-import java.util.stream.IntStream;
-
 import com.github.javafaker.Faker;
 
-import static nl.jaapcoomans.demo.testdata.gamestore.catalog.GameTestDataFactory.aGameId;
+import java.util.stream.IntStream;
+
+import static nl.jaapcoomans.demo.testdata.gamestore.catalog.GameTestDataFactory.aGame;
 import static nl.jaapcoomans.demo.testdata.gamestore.catalog.GameTestDataFactory.aPrice;
 import static nl.jaapcoomans.demo.testdata.gamestore.store.CustomerTestDataFactory.aCustomerId;
 import static nl.jaapcoomans.demo.testdata.gamestore.store.DeliveryMethodTestDataFactory.aDeliveryMethod;
+import static nl.jaapcoomans.demo.testdata.gamestore.store.OrderDemoPrinter.printForDemo;
 
 public class OrderTestDataFactory {
     private static final Faker faker = Faker.instance();
@@ -17,15 +18,18 @@ public class OrderTestDataFactory {
     }
 
     public static Order anOrder() {
-        return anOrder(aStatus());
+        var order = anOrder(aStatus());
+        return printForDemo(order);
     }
 
     public static Order anEmptyDraftOrder() {
-        return Order.create(aCustomerId());
+        var order = Order.create(aCustomerId());
+        return printForDemo(order);
     }
 
     public static Order aDraftOrder() {
-        return anOrder(Order.Status.DRAFT);
+        var order = anOrder(Order.Status.DRAFT);
+        return printForDemo(order);
     }
 
     public static Order aConfirmedOrder() {
@@ -36,7 +40,8 @@ public class OrderTestDataFactory {
 
         addSomeOrderLines(orderBuilder);
 
-        return orderBuilder.build();
+        var order = orderBuilder.build();
+        return printForDemo(order);
     }
 
     public static Order anOrder(Order.Status status) {
@@ -46,7 +51,8 @@ public class OrderTestDataFactory {
 
         addSomeOrderLines(orderBuilder);
 
-        return orderBuilder.build();
+        var order = orderBuilder.build();
+        return printForDemo(order);
     }
 
     public static int aNumberOfItems() {
@@ -54,15 +60,15 @@ public class OrderTestDataFactory {
     }
 
     public static void addSomeOrderLines(Order.OrderBuilder builder) {
-        var numberOfOrderLines = faker.number().numberBetween(1, 10);
+        var numberOfOrderLines = faker.number().numberBetween(1, 5);
         IntStream.range(0, numberOfOrderLines)
-                .forEach(i -> builder.orderLine(aGameId(), aNumberOfItems(), aPrice()));
+                .forEach(i -> builder.orderLine(aGame(), aNumberOfItems(), aPrice()));
     }
 
     public static Order.OrderBuilder anOrderBuilder() {
         return Order.builder()
                 .status(Order.Status.DRAFT)
-                .orderLine(aGameId(), aNumberOfItems(), aPrice())
+                .orderLine(aGame(), aNumberOfItems(), aPrice())
                 .deliveryMethod(aDeliveryMethod())
                 .customerId(aCustomerId());
     }

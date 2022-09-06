@@ -107,8 +107,8 @@ public class OrderTest {
     public void aComplexTestWithBuilder() {
         // Given
         var order = anOrderBuilder()
-                .orderLine(aGameId(), aNumberOfItems(), aPrice())
-                .orderLine(aGameId(), aNumberOfItems(), aPrice())
+                .orderLine(aGame(), aNumberOfItems(), aPrice())
+                .orderLine(aGame(), aNumberOfItems(), aPrice())
                 .status(Order.Status.PAID)
                 .paymentId(aPaymentId())
                 .paymentType(aPaymentType())
@@ -120,6 +120,8 @@ public class OrderTest {
         var newOrder = order.cancelItem(itemToCancel.getGameId());
 
         // Then
+        assertThat(order.getId()).isNotEqualTo(newOrder.getId());
+        assertThat(order.getStatus()).isEqualTo(Order.Status.CANCELLED);
         assertThat(newOrder.getOrderLines().size()).isEqualTo(order.getOrderLines().size() - 1);
         assertThat(newOrder.calculateTotalAmount()).isEqualTo(order.calculateTotalAmount().subtract(itemToCancel.totalPrice()));
     }
@@ -137,6 +139,8 @@ public class OrderTest {
         var newOrder = order.cancelItem(itemToCancel.getGameId());
 
         // Then
+        assertThat(order.getId()).isNotEqualTo(newOrder.getId());
+        assertThat(order.getStatus()).isEqualTo(Order.Status.CANCELLED);
         assertThat(newOrder.getOrderLines().size()).isEqualTo(order.getOrderLines().size() - 1);
         assertThat(newOrder.calculateTotalAmount()).isEqualTo(order.calculateTotalAmount().subtract(itemToCancel.totalPrice()));
     }
