@@ -1,11 +1,13 @@
 package nl.jaapcoomans.demo.testdata.gamestore.catalog;
 
 import com.github.javafaker.Faker;
+import nl.jaapcoomans.demo.testdata.gamestore.store.DemoPrinter;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
 import static nl.jaapcoomans.demo.testdata.gamestore.catalog.PublisherTestDataFactory.aPublisherId;
+import static nl.jaapcoomans.demo.testdata.gamestore.store.DemoPrinter.printForDemo;
 
 public class GameTestDataFactory {
     private static final Faker faker = Faker.instance();
@@ -58,7 +60,7 @@ public class GameTestDataFactory {
     }
 
     public static Game aGame() {
-        return new Game(
+        var game = new Game(
                 aGameId(),
                 aGameTitle(),
                 aCategory(),
@@ -69,5 +71,7 @@ public class GameTestDataFactory {
                 aMinimumAge(),
                 aPrice(),
                 aValidEan13Code());
+
+        return printForDemo(game);
     }
 }

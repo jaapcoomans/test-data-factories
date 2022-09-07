@@ -8,7 +8,7 @@ import static nl.jaapcoomans.demo.testdata.gamestore.catalog.GameTestDataFactory
 import static nl.jaapcoomans.demo.testdata.gamestore.catalog.GameTestDataFactory.aPrice;
 import static nl.jaapcoomans.demo.testdata.gamestore.store.CustomerTestDataFactory.aCustomerId;
 import static nl.jaapcoomans.demo.testdata.gamestore.store.DeliveryMethodTestDataFactory.aDeliveryMethod;
-import static nl.jaapcoomans.demo.testdata.gamestore.store.OrderDemoPrinter.printForDemo;
+import static nl.jaapcoomans.demo.testdata.gamestore.store.DemoPrinter.printForDemo;
 
 public class OrderTestDataFactory {
     private static final Faker faker = Faker.instance();

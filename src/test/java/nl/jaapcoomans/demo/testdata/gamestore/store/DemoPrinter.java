@@ -1,6 +1,26 @@
 package nl.jaapcoomans.demo.testdata.gamestore.store;
 
-public class OrderDemoPrinter {
+import nl.jaapcoomans.demo.testdata.gamestore.catalog.Game;
+
+public class DemoPrinter {
+
+    public static Game printForDemo(Game game) {
+        System.out.println("=================== CREATED GAME ====================");
+        System.out.printf("ID              : %s%n", game.getId().value());
+        System.out.printf("Title           : %s%n", game.getTitle());
+        System.out.printf("Category        : %s%n", game.getCategory());
+        System.out.printf("Designer        : %s%n", game.getDesigner());
+        System.out.printf("Nr of players   : %s%n", format(game.getNumberOfPlayers()));
+        System.out.printf("Playtime in min : %s%n", format(game.getPlayingTimeInMinutes()));
+        System.out.printf("Publisher ID    : %s%n", game.getPublisherId().value());
+        System.out.printf("EAN code        : %s%n", game.getEanCode());
+
+        return game;
+    }
+
+    private static String format(Game.NumberRange numberRange) {
+        return String.format("(%d - %d)", numberRange.minInclusive(), numberRange.maxInclusive());
+    }
 
     public static Order printForDemo(Order order) {
         System.out.println("=================== CREATED ORDER ===================");
@@ -12,7 +32,7 @@ public class OrderDemoPrinter {
         System.out.printf("Payment Date    : %s%n", order.getPaymentDate());
         System.out.printf("Payment Type    : %s%n", order.getPaymentType());
         System.out.println("Order Lines    :");
-        order.getOrderLines().forEach(OrderDemoPrinter::printForDemo);
+        order.getOrderLines().forEach(DemoPrinter::printForDemo);
         System.out.printf("Total amount: %s%n", order.calculateTotalAmount());
 
         return order;

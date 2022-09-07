@@ -7,7 +7,7 @@ import com.github.javafaker.Faker;
 
 import static nl.jaapcoomans.demo.testdata.gamestore.catalog.GameTestDataFactory.aGame;
 import static nl.jaapcoomans.demo.testdata.gamestore.store.CustomerTestDataFactory.aCustomerId;
-import static nl.jaapcoomans.demo.testdata.gamestore.store.OrderDemoPrinter.printForDemo;
+import static nl.jaapcoomans.demo.testdata.gamestore.store.DemoPrinter.printForDemo;
 import static nl.jaapcoomans.demo.testdata.gamestore.store.OrderTestDataFactory.aNumberOfItems;
 import static nl.jaapcoomans.demo.testdata.gamestore.store.PaymentTestDataFactory.aPaymentId;
 import static nl.jaapcoomans.demo.testdata.gamestore.store.PaymentTestDataFactory.aPaymentType;
