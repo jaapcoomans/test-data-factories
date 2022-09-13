@@ -40,3 +40,4 @@ I presented the conference talk to which this project belongs at the following c
 | J-Fall     | 04-11-2021 | https://jfall.nl/timetable-2021/                                        |
 | JavaLand   | 16-03-2022 | https://en.shop.doag.org/javaland/2022/agenda/                          |
 | JavaZone   | 07-09-2022 | https://2022.javazone.no/#/program/362babf9-6c32-42cb-8dd7-6d84b600f139 |
+| Devoxx BE  | 10-10-2022 | https://devoxx.be/talk/?id=2959                                         |
