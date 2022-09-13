@@ -1,6 +1,6 @@
 package nl.jaapcoomans.demo.testdata.conference.domain;
 
-import com.github.javafaker.Faker;
+import net.datafaker.Faker;
 
 public class RoomTestDataFactory {
     private static final Faker faker = new Faker();

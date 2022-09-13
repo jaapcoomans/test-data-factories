@@ -1,9 +1,9 @@
 package nl.jaapcoomans.demo.testdata.gamestore.store;
 
+import net.datafaker.Faker;
+
 import java.math.BigDecimal;
 import java.util.UUID;
-
-import com.github.javafaker.Faker;
 
 public class PaymentTestDataFactory {
     private static final Faker faker = Faker.instance();

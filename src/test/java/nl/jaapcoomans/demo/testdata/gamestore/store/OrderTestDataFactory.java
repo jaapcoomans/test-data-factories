@@ -1,6 +1,6 @@
 package nl.jaapcoomans.demo.testdata.gamestore.store;
 
-import com.github.javafaker.Faker;
+import net.datafaker.Faker;
 
 import java.util.stream.IntStream;
 

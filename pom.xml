@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>nl.jaapcoomans.demo.testdata</groupId>
-    <artifactId>conference-app</artifactId>
+    <artifactId>test-data-factories</artifactId>
     <packaging>jar</packaging>
     <version>0.0.1-SNAPSHOT</version>
 
@@ -17,7 +17,8 @@
 
         <!-- dependency versions -->
         <assertj-core.version>3.22.0</assertj-core.version>
-        <javafaker.version>1.0.2</javafaker.version>
+        <commons-text.version>1.9</commons-text.version>
+        <datafaker.version>1.6.0</datafaker.version>
         <junit-jupiter.version>5.8.2</junit-jupiter.version>
         <mockito-core.version>4.3.1</mockito-core.version>
     </properties>
@@ -41,9 +42,15 @@
             <version>${assertj-core.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.github.javafaker</groupId>
-            <artifactId>javafaker</artifactId>
-            <version>${javafaker.version}</version>
+            <groupId>net.datafaker</groupId>
+            <artifactId>datafaker</artifactId>
+            <version>${datafaker.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+            <version>${commons-text.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

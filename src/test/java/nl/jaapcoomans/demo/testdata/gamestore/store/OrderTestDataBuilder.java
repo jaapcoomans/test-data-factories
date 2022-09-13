@@ -1,9 +1,9 @@
 package nl.jaapcoomans.demo.testdata.gamestore.store;
 
+import net.datafaker.Faker;
+
 import java.time.LocalDate;
 import java.util.stream.IntStream;
-
-import com.github.javafaker.Faker;
 
 import static nl.jaapcoomans.demo.testdata.gamestore.catalog.GameTestDataFactory.aGame;
 import static nl.jaapcoomans.demo.testdata.gamestore.store.CustomerTestDataFactory.aCustomerId;

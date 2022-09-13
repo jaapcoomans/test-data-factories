@@ -1,11 +1,11 @@
 package nl.jaapcoomans.demo.testdata.gamestore.store;
 
-import com.github.javafaker.Faker;
+import net.datafaker.Faker;
 
 import java.math.BigDecimal;
 
 public class DeliveryMethodTestDataFactory {
-    private static final Faker faker = Faker.instance();
+    private static final Faker faker = new Faker();
 
     public static DeliveryMethod aDeliveryMethod() {
         return new DeliveryMethod(

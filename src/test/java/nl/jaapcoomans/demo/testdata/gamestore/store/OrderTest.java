@@ -1,28 +1,20 @@
 package nl.jaapcoomans.demo.testdata.gamestore.store;
 
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+
 import java.time.LocalDate;
 
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.params.*;
-import org.junit.jupiter.params.provider.*;
-
 import static nl.jaapcoomans.demo.testdata.gamestore.catalog.GameTestDataFactory.aGame;
-import static nl.jaapcoomans.demo.testdata.gamestore.catalog.GameTestDataFactory.aGameId;
 import static nl.jaapcoomans.demo.testdata.gamestore.catalog.GameTestDataFactory.aPrice;
 import static nl.jaapcoomans.demo.testdata.gamestore.store.DeliveryMethodTestDataFactory.aDeliveryMethod;
 import static nl.jaapcoomans.demo.testdata.gamestore.store.OrderTestDataBuilder.givenAnOrder;
-import static nl.jaapcoomans.demo.testdata.gamestore.store.OrderTestDataFactory.aConfirmedOrder;
-import static nl.jaapcoomans.demo.testdata.gamestore.store.OrderTestDataFactory.aDraftOrder;
-import static nl.jaapcoomans.demo.testdata.gamestore.store.OrderTestDataFactory.aNumberOfItems;
-import static nl.jaapcoomans.demo.testdata.gamestore.store.OrderTestDataFactory.anEmptyDraftOrder;
-import static nl.jaapcoomans.demo.testdata.gamestore.store.OrderTestDataFactory.anOrder;
-import static nl.jaapcoomans.demo.testdata.gamestore.store.OrderTestDataFactory.anOrderBuilder;
-import static nl.jaapcoomans.demo.testdata.gamestore.store.PaymentTestDataFactory.aPaymentFor;
-import static nl.jaapcoomans.demo.testdata.gamestore.store.PaymentTestDataFactory.aPaymentId;
-import static nl.jaapcoomans.demo.testdata.gamestore.store.PaymentTestDataFactory.aPaymentType;
-import static nl.jaapcoomans.demo.testdata.gamestore.store.PaymentTestDataFactory.anInsufficientPaymentFor;
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static nl.jaapcoomans.demo.testdata.gamestore.store.OrderTestDataFactory.*;
+import static nl.jaapcoomans.demo.testdata.gamestore.store.PaymentTestDataFactory.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class OrderTest {
     @Test

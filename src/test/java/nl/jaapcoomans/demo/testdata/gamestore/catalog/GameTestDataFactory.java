@@ -1,7 +1,6 @@
 package nl.jaapcoomans.demo.testdata.gamestore.catalog;
 
-import com.github.javafaker.Faker;
-import nl.jaapcoomans.demo.testdata.gamestore.store.DemoPrinter;
+import net.datafaker.Faker;
 
 import java.math.BigDecimal;
 import java.util.UUID;
