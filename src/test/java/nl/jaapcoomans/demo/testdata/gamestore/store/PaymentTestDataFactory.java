@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 public class PaymentTestDataFactory {
-    private static final Faker faker = Faker.instance();
+    private static final Faker faker = new Faker();
 
     public static Payment.Id aPaymentId() {
         return new Payment.Id(UUID.randomUUID());

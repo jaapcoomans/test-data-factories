@@ -9,7 +9,7 @@ import static nl.jaapcoomans.demo.testdata.gamestore.catalog.PublisherTestDataFa
 import static nl.jaapcoomans.demo.testdata.gamestore.store.DemoPrinter.printForDemo;
 
 public class GameTestDataFactory {
-    private static final Faker faker = Faker.instance();
+    private static final Faker faker = new Faker();
 
     public static Game.Id aGameId() {
         return new Game.Id(UUID.randomUUID());

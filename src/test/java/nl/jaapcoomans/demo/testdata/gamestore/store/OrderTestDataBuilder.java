@@ -13,7 +13,7 @@ import static nl.jaapcoomans.demo.testdata.gamestore.store.PaymentTestDataFactor
 import static nl.jaapcoomans.demo.testdata.gamestore.store.PaymentTestDataFactory.aPaymentType;
 
 class OrderTestDataBuilder {
-    private static final Faker faker = Faker.instance();
+    private static final Faker faker = new Faker();
 
     private final Order.OrderBuilder orderBuilder;
 

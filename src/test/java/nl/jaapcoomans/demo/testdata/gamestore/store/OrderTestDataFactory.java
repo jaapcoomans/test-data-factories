@@ -11,7 +11,7 @@ import static nl.jaapcoomans.demo.testdata.gamestore.store.DeliveryMethodTestDat
 import static nl.jaapcoomans.demo.testdata.gamestore.store.DemoPrinter.printForDemo;
 
 public class OrderTestDataFactory {
-    private static final Faker faker = Faker.instance();
+    private static final Faker faker = new Faker();
 
     public static Order.Status aStatus() {
         return faker.options().option(Order.Status.class);
