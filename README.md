@@ -5,7 +5,7 @@ This project is a simple demo belonging to my conference talk "Fairies, Fakers a
 ## Current version
 
 The demo consists of a partial implementation of a boardgame webshop. 
-It demonstrates how Java-faker can be used to create Test Data Factories and Test Data Builders.
+It demonstrates how Datafaker can be used to create Test Data Factories and Test Data Builders.
 
 ### Test Data Factories
 The Game store contains several Test Data Factories:
@@ -19,7 +19,7 @@ The Game store contains several Test Data Factories:
 ## Previous version
 
 Previously (for the talks at Devoxx UK, J-Fall and JavaLand), the demo consisted of an (incomplete) Call for Papers application.
-The main purpose is to demonstrate how Java-faker can be used to create Test Data Factories for unit tests.
+The main purpose is to demonstrate how Datafaker can be used to create Test Data Factories for unit tests.
 
 ### Test Data Factories
 The CFP part of the project contains 4 Test Data Factories:
