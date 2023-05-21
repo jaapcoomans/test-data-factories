@@ -1,6 +1,6 @@
 # Fairies, Fakers and Factories: Boost your tests with better test data
 
-This project is a simple demo belonging to my conference talk "Fairies, Fakers and Factories" which I've presented at Devoxx UK 2021, J-Fall 2021, JavaLand 2022 and Javazone 2022.
+This project is a simple demo belonging to my conference talk "Fairies, Fakers and Factories" which I've presented at Devoxx UK 2021, J-Fall 2021, JavaLand 2022, Javazone 2022, Devoxx BE 2022 and Voxxed Days Brussels 2023.
 
 ## Current version
 
@@ -34,10 +34,11 @@ The latter combines the Factory with a Builder to demonstrate complex objects.
 
 I presented the conference talk to which this project belongs at the following conferences:
 
-| Conference | Date       | Link to conference site                                                 |
-|------------|------------|-------------------------------------------------------------------------|
-| Devoxx UK  | 02-11-2021 | https://www.devoxx.co.uk/talk/?id=12628                                 |
-| J-Fall     | 04-11-2021 | https://jfall.nl/timetable-2021/                                        |
-| JavaLand   | 16-03-2022 | https://en.shop.doag.org/javaland/2022/agenda/                          |
-| JavaZone   | 07-09-2022 | https://2022.javazone.no/#/program/362babf9-6c32-42cb-8dd7-6d84b600f139 |
-| Devoxx BE  | 10-10-2022 | https://devoxx.be/talk/?id=2959                                         |
+| Conference           | Date       | Link to conference site                                                 |
+|----------------------|------------|-------------------------------------------------------------------------|
+| Devoxx UK            | 02-11-2021 | https://www.devoxx.co.uk/talk/?id=12628                                 |
+| J-Fall               | 04-11-2021 | https://jfall.nl/timetable-2021/                                        |
+| JavaLand             | 16-03-2022 | https://en.shop.doag.org/javaland/2022/agenda/                          |
+| JavaZone             | 07-09-2022 | https://2022.javazone.no/#/program/362babf9-6c32-42cb-8dd7-6d84b600f139 |
+| Devoxx BE            | 10-10-2022 | https://devoxx.be/talk/?id=2959                                         |
+| Voxxed Days Brussels | 23-05-2023 | https://brussels.voxxeddays.com/speaker-detail-page?speakerId=1409      | 
